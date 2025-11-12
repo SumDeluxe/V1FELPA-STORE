@@ -24,33 +24,45 @@ import {
     setLogLevel
 } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-// --- Configuración de Firebase ---
-const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+/// --- Configuración de Firebase ---
+// AQUÍ PEGAMOS TUS LLAVES REALES
+const firebaseConfig = {
+  apiKey: "AIzaSyA4voqljOivBk0YwS-llbGEfIeBuYkh5gI",
+  authDomain: "felpa-store.firebaseapp.com",
+  projectId: "felpa-store",
+  storageBucket: "felpa-store.firebasestorage.app",
+  messagingSenderId: "971773708207",
+  appId: "1:971773708207:web:d4a318825ca45691a9515a",
+  measurementId: "G-T642N5NBE2"
+};
+
+// Extraemos el appId directamente de tu configuración
+const appId = firebaseConfig.appId;
+// Como estamos en local, no hay token inicial
+const initialAuthToken = null; 
 
 let app, auth, db;
 let adminListenerUnsubscribe = null; 
-let adminPedidosListenerUnsubscribe = null; // Nuevo listener para pedidos
+let adminPedidosListenerUnsubscribe = null; 
 let localCart = []; 
-let currentTotal = 0; // Variable para guardar el total
+let currentTotal = 0; 
 
 try {
-    app = initializeApp(firebaseConfig);
+    // Pasamos 'firebaseConfig' a la función initializeApp
+    app = initializeApp(firebaseConfig); 
     auth = getAuth(app);
     db = getFirestore(app);
     setLogLevel('Debug');
-    console.log("Firebase inicializado correctamente.");
+    console.log("Firebase inicializado correctamente con tus claves.");
 
-    if (initialAuthToken) {
-        await signInWithCustomToken(auth, initialAuthToken);
-    } else {
-        await signInAnonymously(auth);
-    }
+    // Lógica de inicio de sesión anónimo
+    await signInAnonymously(auth);
+
 } catch (error) {
     console.error("Error al inicializar Firebase:", error);
-    showMessage("Error al conectar con la base de datos.");
+    showMessage("Error al conectar con la base de datos: " + error.message);
 }
+
 
 // --- Selectores de Elementos ---
 const loginBtn = document.getElementById('loginBtn');
