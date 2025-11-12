@@ -1,0 +1,13 @@
+/* css/style.css */
+
+/* Agregamos una fuente cursiva personalizada para el título */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
+.font-cursive {
+    font-family: 'Dancing Script', cursive;
+}
+/* Estilos para botones de paginación deshabilitados */
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
