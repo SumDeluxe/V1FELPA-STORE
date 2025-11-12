@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FELPA STORE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+<body class="bg-gray-100 p-4 md:p-12">
+
+    <div class="max-w-7xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+        
+        <header class="bg-purple-200 p-6">
+            <h1 class="text-5xl md:text-7xl text-purple-800 text-center font-cursive">
+                FELPA STORE
+            </h1>
+        </header>
+
+        <nav class="bg-white shadow-md p-4 flex justify-center items-center flex-wrap gap-4 md:gap-8">
+            <a href="#" id="homeBtn" class="text-gray-700 hover:text-purple-600 font-medium text-lg">Inicio</a>
+            
+            <div class="relative group">
+                <button class="text-gray-700 hover:text-purple-600 font-medium text-lg focus:outline-none">
+                    Artículos <span class="text-xs">&#9662;</span>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 hidden group-hover:block">
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50">Peluches Por Defecto</a>
+                    <a href="#" id="customPlushBtn" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50">Peluches Personalizados</a>
+                </div>
+            </div>
+
+            <a href="#" id="adminPanelBtn" class="text-white bg-red-600 hover:bg-red-700 font-medium text-lg px-4 py-1 rounded hidden">Panel de Admin</a>
+            
+            <div id="cartIcon" class="relative cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-gray-600 hover:text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span id="cartCount" class="absolute -top-2 -right-2 bg-purple-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+            </div>
+
+            <div id="authLinks" class="flex gap-4">
+                <button id="loginBtn" class="text-gray-700 hover:text-purple-600 font-medium text-lg">Login</button>
+                <button id="registerBtn" class="bg-purple-600 text-white py-1 px-4 rounded-lg font-medium hover:bg-purple-700 text-lg">Registrarse</button>
+            </div>
+            <div id="userLinks" class="hidden items-center gap-4">
+                <span id="userEmail" class="text-sm text-gray-600"></span>
+                <button id="logoutBtn" class="text-gray-700 hover:text-purple-600 font-medium text-lg">Salir</button>
+            </div>
+        </nav>
+
+        <main id="mainContent" class="p-6">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Nuestros Peluches</h2>
+            
+            <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                </div>
+
+            <div id="pagination-controls" class="flex justify-between items-center mt-8">
+                <button id="prevPageBtn" class="pagination-btn bg-purple-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+                    &lt; Anterior
+                </button>
+                <span id="pageInfo" class="text-gray-700 font-medium">Página 1 / 5</span>
+                <button id="nextPageBtn" class="pagination-btn bg-purple-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+                    Siguiente &gt;
+                </button>
+            </div>
+        </main>
+
+        <section id="adminSection" class="p-6 hidden">
+            <h2 class="text-3xl font-bold text-red-700 mb-6">Panel de Administrador</h2>
+            
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Peticiones de Peluches Personalizados</h3>
+            <div id="pedidosContainer" class="space-y-4">
+                <p class="text-gray-500">No hay peticiones pendientes.</p>
+            </div>
+
+            <hr class="my-8 border-t-2 border-gray-200">
+
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Pedidos de Clientes (Pagados)</h3>
+            <div id="pedidosClientesContainer" class="space-y-4">
+                <p class="text-gray-500">No hay pedidos de clientes.</p>
+            </div>
+        </section>
+
+    </div>
+
+    <div id="customPlushModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-md">
+            <div class="flex justify-between items-center border-b p-4">
+                <h3 class="text-2xl font-semibold text-gray-800">Personaliza tu Peluche</h3>
+                <button class="close-modal-btn text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+            </div>
+            <form id="customPlushForm" class="p-6">
+                <p class="text-gray-600 mb-4">
+                    Describe cómo te gustaría tu peluche. (Debes iniciar sesión para enviar)
+                </p>
+                <div class="mb-4">
+                    <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Tu idea:</label>
+                    <textarea id="custom-description" rows="6" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Ej: Quiero un peluche de mi perro..." required></textarea>
+                </div>
+                <button type="submit" class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+                    Enviar Petición
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-sm">
+            <div class="flex justify-between items-center border-b p-4">
+                <h3 class="text-2xl font-semibold text-gray-800">Iniciar Sesión</h3>
+                <button class="close-modal-btn text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+            </div>
+            <form id="loginForm" class="p-6 space-y-4">
+                <div>
+                    <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email (tu usuario):</label>
+                    <input type="email" id="login-email" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+                <div>
+                    <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña:</label>
+                    <input type="password" id="login-password" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+                <button type="submit" class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+                    Entrar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-md">
+            <div class="flex justify-between items-center border-b p-4">
+                <h3 class="text-2xl font-semibold text-gray-800">Crear Cuenta</h3>
+                <button class="close-modal-btn text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+            </div>
+            <form id="registerForm" class="p-6 space-y-3 overflow-y-auto max-h-[80vh]">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div><label for="reg-nombres" class="block text-sm font-medium text-gray-700 mb-1">Nombres:</label><input type="text" id="reg-nombres" class="w-full p-2 border border-gray-300 rounded-md" required></div>
+                    <div><label for="reg-apellidos" class="block text-sm font-medium text-gray-700 mb-1">Apellidos:</label><input type="text" id="reg-apellidos" class="w-full p-2 border border-gray-300 rounded-md" required></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div><label for="reg-telefono" class="block text-sm font-medium text-gray-700 mb-1">Número Telefónico:</label><input type="tel" id="reg-telefono" class="w-full p-2 border border-gray-300 rounded-md"></div>
+                    <div><label for="reg-edad" class="block text-sm font-medium text-gray-700 mb-1">Edad:</label><input type="number" id="reg-edad" class="w-full p-2 border border-gray-300 rounded-md"></div>
+                </div>
+                <div><label for="reg-direccion" class="block text-sm font-medium text-gray-700 mb-1">Dirección:</label><input type="text"id="reg-direccion" class="w-full p-2 border border-gray-300 rounded-md"></div>
+                <div><label for="reg-ciudad" class="block text-sm font-medium text-gray-700 mb-1">Ciudad:</label><input type="text" id="reg-ciudad" class="w-full p-2 border border-gray-300 rounded-md"></div>
+                <hr class="my-3">
+                <div><label for="reg-email" class="block text-sm font-medium text-gray-700 mb-1">Email (será tu usuario):</label><input type="email" id="reg-email" class="w-full p-2 border border-gray-300 rounded-md" required></div>
+                <div><label for="reg-password" class="block text-sm font-medium text-gray-700 mb-1">Crear Contraseña:</label><input type="password" id="reg-password" class="w-full p-2 border border-gray-300 rounded-md" required></div>
+                <button type="submit" class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-purple-700 transition-colors">Registrarme</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-md">
+            <div class="flex justify-between items-center border-b p-4">
+                <h3 class="text-2xl font-semibold text-gray-800">Tu Carrito</h3>
+                <button class="close-modal-btn text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+            </div>
+            <div id="cartItemsContainer" class="p-6 space-y-4 overflow-y-auto max-h-64">
+                <p class="text-gray-500 text-center">Tu carrito está vacío.</p>
+            </div>
+            <div class="p-6 border-t">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xl font-semibold text-gray-800">Total:</span>
+                    <span id="cartTotal" class="text-2xl font-bold text-purple-700">$0.00</span>
+                </div>
+                <button id="checkoutBtn" class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+                    Proceder al Pago
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="paymentModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-md">
+            <div class="flex justify-between items-center border-b p-4">
+                <h3 class="text-2xl font-semibold text-gray-800">Completa tu Pago</h3>
+                <button class="close-modal-btn text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+            </div>
+            <div class="p-6 text-center">
+                <p class="text-lg text-gray-700">Total a Pagar:</p>
+                <p id="paymentTotal" class="text-4xl font-bold text-purple-700 my-2">$0.00</p>
+                
+                <p class="text-sm text-gray-600 mt-4">Por favor, escanea el QR con tu app Nequi.</p>
+                
+                <img src="https://placehold.co/250x250/E9D5FF/4C1D95?text=Tu+QR+de+Nequi+Aqui" 
+                     alt="Código QR de Nequi" 
+                     class="w-64 h-64 mx-auto my-4 border-4 border-purple-300 rounded-lg"
+                     onerror="this.onerror=null; this.src='https://placehold.co/250x250/E9D5FF/4C1D95?text=Error+QR';">
+                
+                <p class="text-sm text-gray-600">O envía el pago al número: <strong class="text-gray-800">300 123 4567</strong></p>
+                
+                <p class="text-gray-800 font-semibold mt-6 mb-4">
+                    Una vez realizado el pago, presiona "Confirmar"
+                </p>
+
+                <button id="confirmPaymentBtn" class="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors text-lg">
+                    ¡Ya Pagué, Confirmar Pedido!
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="message-box" class="fixed bottom-5 right-5 z-50 hidden bg-red-600 text-white p-4 rounded-lg shadow-lg">
+        <span id="message-text"></span>
+    </div>
+
+
+    <script type="module" src="js/main.js"></script>
+    
+</body>
+</html>
